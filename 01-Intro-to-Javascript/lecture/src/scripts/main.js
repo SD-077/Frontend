@@ -1,96 +1,50 @@
-function greet(name) {
-  return `Hello, ${name}!`;
+
+const h1 = document.querySelector("h1")
+const main = document.querySelector("main");
+const form = document.querySelector("form");
+const todoList = document.querySelector("#todo-list");
+
+
+function addTodo(item) {
+  const li = document.createElement("li");
+  
+  const span = document.createElement("span");
+  span.textContent = item;
+
+  const editBtn = document.createElement("button");
+  editBtn.textContent = "edit";
+
+  editBtn.addEventListener("click", () => {
+    li.style.textDecoration = "line-through"
+  });
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = 'delete';
+  
+  deleteBtn.addEventListener("click", () => {
+    li.remove()
+  });
+
+  li.appendChild(span);
+  li.appendChild(editBtn)
+  li.appendChild(deleteBtn);
+  // todoList.appendChild(li)
+  return li;
 }
 
-function goodMorning(name) {
-  return `Good Morning, ${name}`
-}
-// High order functions
-function greetUser(name, callback) {
-  return callback(name); // callback function
-}
 
-console.log(greetUser("Harry", greet))
-console.log(greetUser("Harry", goodMorning))
+form.addEventListener("submit", (event) => {
+  event.preventDefault()
+  const todoInput = document.querySelector('#todo-input').value.trim();
+  // console.log(event.target[0].value.trim())
+  console.log(todoInput)
+  if(!todoInput) alert("No input!")
+  const newTodo = addTodo(todoInput);
+  todoList.appendChild(newTodo);
+  form.reset()
+})
 
-const numbers = [1, 2, 3, 20, 5, 15];
+addTodo("Cooking")
 
-function logItem(item) {
-  console.log(item)
-}
-function stringifyItems(item) {
-  if(typeof item !== "string") {
-    console.log(item.toString())
-  }
-}
-function increaseByOne(item) {
-  return item + 1
-}
-function mapAllItems(array, callback) {
-  for(const item of array) {
-    const newValue = callback(item);
-    
-  }
-}
-// mapAllItems(numbers, logItem);
-// mapAllItems(numbers, stringifyItems)
 
-const students = ["Harry", "Tom", "Jane"]
 
-let studentString = "";
-const newArray = [];
-
-// forEach - return undefined
-students.forEach((student) => studentString += `${student}, `);
-const forEachVariable = students.forEach((student) => newArray.push(student));
-console.log(forEachVariable)
-console.log(studentString)
-console.log(newArray)
-
-// map - returns a new array
-
-const increase1 = numbers.map((number) => number + 1);
-console.log(increase1);
-const greetStudents = students.map((student) => `Hello, ${student}`);
-console.log(greetStudents)
-
-// filter - return a new array
-const numbersBiggerThan10 = numbers.filter((number) => number > 10)
-console.log(numbersBiggerThan10)
-
-// find - return one item of the array
-const numberBiggerThan5 = numbers.find((number) => number > 5);
-console.log(numberBiggerThan5)
-
-// reduce - 
-const totalSumOfNumbers = numbers.reduce((total, number) => {
-  return total + number
-}, 0)
-console.log(totalSumOfNumbers)
-
-const studentsString = students.reduce((accumulator, currentStudent) => {
-  let currentIndex = students.indexOf(currentStudent);
-  if(currentIndex === students.length - 1) {
-    return (accumulator += `${currentStudent}`);
-  } else {
-    return (accumulator += `${currentStudent}, `);
-  }
-}, "");
-console.log(studentsString);
-
-// some - boolean
-const hasItemsBiggerThan10 = numbers.some((number) => number > 19);
-console.log(hasItemsBiggerThan10)
-
-// every - boolean
-const allItemsBiggerThan10 = numbers.every((number) => number > 10);
-console.log(allItemsBiggerThan10);
-console.log(numbers)
-
-// sort
-// numbers.sort()
-numbers.sort((a, b) => b - a);
-console.log(numbers)
-
-students.sort()
-console.log(students);
