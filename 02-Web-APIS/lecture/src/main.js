@@ -1,6 +1,20 @@
+const storeItem = (key, value) => {
+  localStorage.setItem(key, JSON.stringify(value));
+  return value;
+};
+
+const retrieveItem = (key) => {
+  return JSON.parse(localStorage.getItem(key));
+};
+
 const form = document.querySelector('form');
 const todoList = document.querySelector('#todo-list');
+let todos = retrieveItem('todos') || [];
 
+todos.forEach((todo) => {
+  const newTodo = addTodo(todo);
+  todoList.appendChild(newTodo);
+});
 // function to create a new todo item
 // it creates a new li element with the todo text, an edit button, and a
 // delete button
@@ -10,15 +24,29 @@ const todoList = document.querySelector('#todo-list');
 // it requires an item parameter which is the text of the todo item
 function addTodo(item) {
   const li = document.createElement('li');
+  li.id = item.id;
+  item.complete ? (li.style.textDecoration = 'line-through') : (li.style.textDecoration = 'none');
 
   const span = document.createElement('span');
-  span.textContent = item;
+  span.textContent = item.text;
 
   const editBtn = document.createElement('button');
   editBtn.textContent = 'edit';
 
   editBtn.addEventListener('click', () => {
-    li.style.textDecoration = 'line-through';
+    todos = todos.map((todo) => {
+      if (todo.id === item.id) {
+        todo.complete ? (todo.complete = false) : (todo.complete = true);
+        return todo;
+      }
+
+      return todo;
+    });
+    storeItem('todos', todos);
+    const editedTodo = todos.find((todo) => todo.id === item.id);
+    console.log(editedTodo.complete);
+
+    editedTodo.complete ? (li.style.textDecoration = 'line-through') : (li.style.textDecoration = 'none');
   });
 
   const deleteBtn = document.createElement('button');
@@ -26,6 +54,8 @@ function addTodo(item) {
 
   deleteBtn.addEventListener('click', () => {
     li.remove();
+    todos = todos.filter((todo) => todo.id !== item.id);
+    storeItem('todos', todos);
   });
 
   li.appendChild(span);
@@ -46,8 +76,18 @@ form.addEventListener('submit', (event) => {
   // console.log(event.target[0].value.trim())
   console.log(todoInput);
   if (!todoInput) alert('No input!');
-  const newTodo = addTodo(todoInput);
+  const newTodoItem = {
+    id: `${new Date()}-${todoInput}`,
+    text: todoInput,
+    complete: false,
+  };
+
+  todos.push(newTodoItem);
+  storeItem('todos', todos);
+  const newTodo = addTodo(newTodoItem);
+  console.log(newTodo);
   todoList.appendChild(newTodo);
+
   form.reset();
 });
 
@@ -67,21 +107,21 @@ form.addEventListener('submit', (event) => {
 
 // this function retrieves the todo list of the jsonplaceholder API and
 // displays it in the todo list
-async function getAllTodos(url) {
-  try {
-    const res = await fetch(url);
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error('Error: ', err);
-  }
-}
+// async function getAllTodos(url) {
+//   try {
+//     const res = await fetch(url);
+//     const data = await res.json();
+//     return data;
+//   } catch (err) {
+//     console.error('Error: ', err);
+//   }
+// }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const todos = await getAllTodos('https://jsonplaceholder.typicode.com/todos');
-  console.log(todos);
-  todos.slice(0, 10).forEach((item) => {
-    const newTodo = addTodo(item.title);
-    todoList.appendChild(newTodo);
-  });
+  // const todos = await getAllTodos('https://jsonplaceholder.typicode.com/todos');
+  // console.log(todos);
+  // todos.slice(0, 10).forEach((item) => {
+  //   const newTodo = addTodo(item.title);
+  //   todoList.appendChild(newTodo);
+  // });
 });
