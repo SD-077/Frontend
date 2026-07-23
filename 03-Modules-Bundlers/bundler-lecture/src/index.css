@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+    themes: halloween --default;
+}
+
+
+
+/* @theme {
+  --color-mint-500: oklch(0.72 0.11 178);
+} */
