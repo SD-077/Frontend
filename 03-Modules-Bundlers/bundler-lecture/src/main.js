@@ -1,21 +1,19 @@
-import './index.css'
-import javascriptLogo from './assets/javascript.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import { setupCounter } from './counter.js'
+import { retrieveTodos, storeTodos } from "./storage/todosStorage.js";
+import { addTodo, todosContainer } from "./ui/todosElements.js";
+import { getAllTodos } from "./server/todos.js";
+import { submitEvent } from "./ui/events.js";
 
-const app = document.querySelector('#app')
+const form = document.querySelector('form');
+const todoList = document.querySelector('#todo-list');
 
-const h1 = document.createElement('h1')
-h1.textContent = 'Hello Vite + JavaScript!'
-h1.classList.add('text-xl', 'font-bold', 'mb-4', 'text-center', 'text-primary')
-app.appendChild(h1)
+form.addEventListener('submit', submitEvent);
 
-const img = document.createElement('img')
-img.src = heroImg
-img.alt = 'Hero Image'
-img.classList.add('hero-image')
-
-app.appendChild(img)
-
-setupCounter(document.querySelector('#counter'))
+document.addEventListener('DOMContentLoaded', async () => {
+  const todos = await getAllTodos();
+  console.log(todos);
+  // todos.slice(0, 10).forEach((item) => {
+  //   const newTodo = addTodo(item.title);
+  //   todoList.appendChild(newTodo);
+  // });
+  // todosContainer(todos, todoList)
+});
