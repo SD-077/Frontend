@@ -1,19 +1,11 @@
-import Hobbies from "./Hobbies";
 
-const StudentCard = ({student: {name, age, hobbies}}) => {
-    
+const StudentCard = ({ student: { name, age, email } }) => {
   return (
-    <div className='card'>
-      <p>
-        {name}, {age}
-      </p>
-      <div>
-        <h3>Hobbies</h3>
-        <ul>
-          {hobbies.map((hobby, index) => (
-            <Hobbies key={index} hobby={hobby} />
-          ))}
-        </ul>
+    <div className='card card-border card-xl shadow-xl'>
+      <p className="card-title">{name}</p>
+      <div className="card-body">
+        <p>Age: {age}</p>
+        <p>Email: {email}</p>
       </div>
     </div>
   );

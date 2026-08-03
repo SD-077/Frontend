@@ -1,22 +1,64 @@
-import StudentCard from "./components/StudentCard";
+import StudentCard from './components/StudentCard';
+import UserFormular from './components/UserFormular';
+import UserObjFormular from './components/UserObjFormular';
+import { useState, useEffect } from 'react';
+import Button from './components/Button';
+import { getPokemons, getPokemonByName } from './server/pokeAPI';
+import SearchPokemon from './components/SearchPokemon';
 
 function App() {
-  const person = {
-    name: 'Maria',
-    age: 54,
-    hobbies: ['cooking', 'painting'],
+  const [user, setUser] = useState({ name: 'Maria', age: 44, hobbies: ['singing', 'reading'] });
+  const [displayUser, setDisplayUser] = useState(true);
+  const [pokemons, setPokemons] = useState([]);
+  const [search, setSearch] = useState('');
+  const [pokemon, setPokemon] = useState({});
+
+  // useEffect(() => {
+  //   console.log("Hello")
+  // })
+
+  useEffect(() => {
+    const myInterval = setInterval(() => {
+      console.log(pokemon)
+    }, 2000)
+
+    return () => clearInterval(myInterval)
+  }, [])
+
+  useEffect(() => {
+    getPokemons(setPokemons);
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    if (search) {
+      getPokemonByName(setPokemon, search, controller);
+    }
+
+    return () => controller.abort()
+  }, [search]);
+
+  console.log(pokemon);
+
+  const handleClick = () => {
+    setDisplayUser((prev) => !prev);
   };
-  const displayPerson = false;
-  console.log(person);
+
   return (
     <div className='h-screen flex flex-col place-items-center place-content-center'>
-      <h1>Hello class</h1>
-      <section>
-        <h2>intro to react</h2>
-      </section>
-      {/* Display StudentCard Component */}
-      <StudentCard student={person} />
-      {displayPerson ? <p>{person.name}</p> : <p>Person not found</p>}
+      <Button
+        onClick={handleClick}
+        text={displayUser ? 'Display ON' : 'Display OFF'}
+        type='button'
+        style={displayUser ? 'btn-primary' : ''}
+      />
+
+      <SearchPokemon setSearch={setSearch} />
+
+      {/* <UserObjFormular setUser={setUser} />
+      {displayUser ? <StudentCard student={user} setUser={setUser} /> : <p>Person not found</p>}
+      
+      {pokemons.length > 0 && pokemons.map((p) => <li key={p.name}>{p.name}</li>)} */}
     </div>
   );
 }
