@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const query = searchParams.get("q") || "";
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
@@ -18,6 +21,15 @@ export default function Users() {
         setIsLoading(false);
       });
   }, []);
+
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearchParams(value ? { q: value } : {});
+  };
+
+  const visibleUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(query.toLowerCase()),
+  );
 
   if (isLoading) {
     return (
@@ -36,28 +48,41 @@ export default function Users() {
   }
 
   return (
-    <div>
-      <h1 className="mb-4 text-3xl font-bold">Users</h1>
-      <ul className="flex flex-col gap-3">
-        {users.map((user) => (
-          <li key={user.id}>
-            <Link
-              to={`/users/${user.id}`}
-              className="card bg-base-100 shadow-sm transition hover:shadow-md"
-            >
-              <div className="card-body flex-row items-center gap-4 py-4">
-                <div className="avatar avatar-placeholder">
-                  <div className="bg-primary text-primary-content w-10 rounded-full">
-                    <span>{user.name[0]}</span>
+    <div className="flex flex-col gap-4">
+      <input
+        type="search"
+        className="input w-full"
+        placeholder="Filter by name"
+        value={query}
+        onChange={handleSearch}
+      />
+
+      {visibleUsers.length === 0 ? (
+        <div className="alert">
+          <span>No user match {query}</span>
+        </div>
+      ) : (
+        <ul className="flex flex-col gap-3">
+          {visibleUsers.map((user) => (
+            <li key={user.id}>
+              <Link
+                to={`/users/${user.id}`}
+                className="card bg-base-100 shadow-sm transition hover:shadow-md"
+              >
+                <div className="card-body flex-row items-center gap-4 py-4">
+                  <div className="avatar avatar-placeholder">
+                    <div className="bg-primary text-primary-content w-10 rounded-full">
+                      <span>{user.name[0]}</span>
+                    </div>
                   </div>
+                  <p className="font-medium">{user.name}</p>
+                  <p className="text-base-content/60 text-sm">{user.email}</p>
                 </div>
-                <p className="font-medium">{user.name}</p>
-                <p className="text-base-content/60 text-sm">{user.email}</p>
-              </div>
-            </Link>
-          </li>
-        ))}
-      </ul>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
