@@ -4,7 +4,7 @@ function getDiscountedPrice(price: number, discount: number) {
 
 const priceFromInput = "100";
 const finalPrice = getDiscountedPrice(priceFromInput, 10);
-console.log(finalPrice);
+// console.log(finalPrice);
 
 let username = "Bob";
 let age: number = 10;
@@ -38,9 +38,128 @@ let coordinate: [number, number] = [-51.3, 10.9];
 let someValues: [boolean, number, string, boolean] = [true, 10, "hello", false];
 
 // ================= Objects =================
-let user: { name: string; age?: number } = {
-  name: "Bob",
-  age: 30,
-};
-
+// let user: { name: string; age?: number } = {
+//   name: "Bob",
+//   age: 30,
+// };
 // user.email = "Bob@bob.com"
+
+// ================= Type Aliases =================
+// PascalCase
+// type User = {
+//   name: string;
+//   age?: number;
+// };
+
+// let user: User = {
+//   name: "Bob",
+//   age: 20,
+// };
+
+// let user2: User = {
+//   name: "Bernd",
+//   age: 20,
+// };
+
+// ================= Interfaces =================
+// interface User {
+//   name: string;
+//   age: number;
+// }
+
+// let user: User = {
+//   name: "Bob",
+//   age: 20,
+// };
+
+// interface Person {
+//   name: string;
+//   age: number;
+// }
+
+// interface Employee extends Person {
+//   jobTitle?: string;
+// }
+
+// let worker: Employee = {
+//   name: "Bob",
+//   age: 20,
+// };
+
+// ================= Optional or default parameters =================
+// optional value
+// function greet(name: string, title?: string) {
+//   if (title) return `Hello, ${title} ${name}`;
+
+//   return `Hello, ${name}`;
+// }
+
+// console.log(greet("Bob"));
+// console.log(greet("Bob", "Mr."));
+
+// default value
+// function greet(name: string, title = "friend") {
+//   return `Hello, ${title} ${name}`;
+// }
+
+// console.log(greet("Bob"));
+// console.log(greet("Bob", "Mr."));
+
+// ================= Function return type =================
+// function calculateTotal(price: number, qty: number): number {
+//   return price * qty;
+// }
+
+// ================= Union Types & Literal Types =================
+// Union Type
+// let id: string | number;
+// id = "abc";
+// id = 50;
+// // id = true;
+
+// // Literal Type
+// type Status = "active" | "inactive" | "pending";
+
+// let userStatus: Status = "active";
+
+// ================= Type Narrowing =================
+// function printId(id: string | number) {
+//   if (typeof id === "string") {
+//     console.log(id.toUpperCase());
+//   } else {
+//     console.log(id.toFixed(2));
+//   }
+// }
+
+// function greet(name: string, title?: string) {
+//   // string | undefined
+//   if (title) return `Hello, ${title} ${name}`;
+
+//   return `Hello, ${name}`;
+// }
+
+// ================= null, undefined and unknown =================
+// undefined: value hasn't been assigned just yet.
+// null: a deliberate, intentional "nothing". YOU decided that there will be no value here
+// unknown:
+
+// async function getUser() {
+//   const res = await fetch("https://jsonplaceholder.typicode.com/users/1");
+//   const data: unknown = await res.json();
+
+//   if (typeof data === "object" && data !== null && "name" in data) {
+//     console.log("got a user object");
+//   }
+
+//   return data;
+// }
+
+// ================= Enums =================
+// enum Role {
+//   Admin = "ADMIN",
+//   User = "USER",
+//   Guest = "GUEST",
+// }
+
+// let myRole: Role = Role.Admin;
+// console.log(myRole);
