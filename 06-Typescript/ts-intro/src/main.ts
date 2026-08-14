@@ -30,7 +30,7 @@ const multiply = (a: number, b: number): number => {
 
 // ================= Arrays and Tuples =================
 // -- arrays --
-let scores: number[] = [90, 231, 784, "21"];
+// let scores: number[] = [90, 231, 784, "21"];
 let names: string[] = ["Bob", "Carl"];
 
 // -- tuples --
@@ -163,3 +163,125 @@ let someValues: [boolean, number, string, boolean] = [true, 10, "hello", false];
 
 // let myRole: Role = Role.Admin;
 // console.log(myRole);
+
+// ================= Generics =================
+
+// function firstElement(arr: number[]): number {
+//   return arr[0];
+// }
+
+// function firstElementStr(arr: string[]): string {
+//   return arr[0];
+// }
+
+// console.log(firstElement(["10", 32, 8, 37]));
+
+// <T> -> type parameter
+// function firstElement<T>(arr: T[]): T {
+//   return arr[0];
+// }
+
+// const a = firstElement<number>([10, 20, 40]);
+
+// const a = firstElement([10, 20, 3429]);
+// const b = firstElement(["10", "20", "3429"]);
+// const c = firstElement([true, false, false]);
+
+// console.log(a, b, c);
+
+// function makePair<T, U>(first: T, second: U): [T, U] {
+//   return [first, second];
+// }
+
+// // constraints
+// function logLength<T extends { length: number }>(value: T) {
+//   console.log(value.length);
+// }
+
+// logLength([1, 2, 3]);
+// logLength("hello");
+// logLength(102934);
+// logLength(true);
+
+// type Box<T> = {
+//   value: T;
+// };
+
+// const numberBox: Box<number> = { value: 89 };
+// const stringBox: Box<string> = { value: "Hello" };
+
+// type User = {
+//   name: string;
+//   age: number;
+// };
+
+// interface APIResponse<T> {
+//   status: number;
+//   message: string;
+//   data: T;
+// }
+
+// // response with user data
+// const userResponse: APIResponse<User> = {
+//   status: 200,
+//   message: "OK",
+//   data: {
+//     name: "Bob",
+//     age: 20,
+//   },
+// };
+
+// const tagsResponse: APIResponse<string[]> = {
+//   status: 200,
+//   message: "OK",
+//   data: ["react", "ts"],
+// };
+
+// // let scores: number[] = [1 , 10]
+
+// let scores: Array<number> = [1, 10];
+
+// ================= Built-in utility types =================
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  age: number;
+}
+
+// --- Pick: keep only some properties ---
+// Pick<T, K>
+
+// type UserPreview = Pick<User, "id" | "name">;
+// const preview: UserPreview = { id: 1, name: "Bob" };
+
+// --- Omit: keep everything except some properties ---
+// Omit<T, K>
+
+// type NewUser = Omit<User, "id">;
+
+// const newUser: NewUser = {
+//   name: "Bob",
+//   email: "bob@mail.com",
+//   age: 20,
+// };
+
+// --- Record: build an object type from keys and values ---
+// Record<K, V>
+
+// type UserRoles = Record<string, string>;
+
+// const roles: UserRoles = {
+//   bob: "admin",
+//   bobette: "editor"
+// }
+
+type Status = "active" | "inactive" | "pending";
+
+type StatusLabels = Record<Status, string>;
+
+const labels: StatusLabels = {
+  active: "Currently active",
+  inactive: "No longer active",
+  pending: "Awaiting approval",
+};
